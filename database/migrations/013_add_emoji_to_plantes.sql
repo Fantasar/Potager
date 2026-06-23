@@ -1,0 +1,1 @@
+ALTER TABLE plantes ADD COLUMN emoji VARCHAR(10);

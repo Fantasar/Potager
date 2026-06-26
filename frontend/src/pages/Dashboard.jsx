@@ -6,6 +6,7 @@ import Navbar from "../components/layout/Navbar";
 import api from "../config/api";
 import { grassBackground } from "../assets/grass-pattern";
 import Papy from "../components/Papy";
+import WatercolorBackground from "../components/garden/WatercolorBackground";
 
 /**
  * Vue jardin interactive.
@@ -280,11 +281,13 @@ function Dashboard() {
         </div>
       )}
 
-      {/* Zone exterieure -- fond neutre */}
-      <div
-        className="flex-1 overflow-auto flex justify-center"
-        style={{ backgroundColor: "#e8e0d4" }}
-      >
+      {/* Zone exterieure -- fond aquarelle */}
+      <div className="flex-1 overflow-auto flex justify-center relative">
+        {/* Fond aquarelle */}
+        <div className="absolute inset-0 z-0">
+          <WatercolorBackground />
+        </div>
+        <div className="relative z-10 flex justify-center w-full">
         {loading ? (
           <p className="text-gray-500 text-lg">Chargement du jardin...</p>
         ) : !gardenSize ? (
@@ -301,8 +304,8 @@ function Dashboard() {
           </div>
         ) : (
           // Jardin delimite avec fond d'herbe + papy a droite
-          <div className="flex items-end gap-4" style={{ padding: 30 }}>
-            {/* Le jardin lui-meme */}
+          <div className="flex items-end gap-4" style={{ padding: 30, perspective: "1200px" }}>
+            {/* Le jardin lui-meme -- en perspective 3D */}
             <div
               ref={gardenRef}
               className="relative select-none"
@@ -310,10 +313,12 @@ function Dashboard() {
                 width: gardenW,
                 height: gardenH,
                 ...grassBackground,
-                border: "3px solid #6B4226",
+                border: "4px solid #6B4226",
                 borderRadius: 8,
-                boxShadow: "0 8px 32px rgba(0,0,0,0.25), inset 0 0 60px rgba(0,0,0,0.1)",
+                boxShadow: "0 15px 40px rgba(0,0,0,0.3), inset 0 0 60px rgba(0,0,0,0.1)",
                 cursor: dragging?.hasMoved ? "grabbing" : "default",
+                transform: "rotateX(15deg)",
+                transformOrigin: "center bottom",
               }}
             >
               {/* Bouton parametres du jardin en haut a droite */}
@@ -380,9 +385,10 @@ function Dashboard() {
                       height: h,
                       border: `${BORDER}px solid #8B5E3C`,
                       backgroundColor: "#f5f0e8",
+                      borderBottom: `${BORDER + 4}px solid #6B4226`,
                       boxShadow: isBeingDragged
-                        ? "0 20px 40px rgba(0,0,0,0.35)"
-                        : "inset 0 0 0 1px #6B4226, 0 4px 12px rgba(0,0,0,0.2)",
+                        ? "0 20px 40px rgba(0,0,0,0.4)"
+                        : "inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1), 0 6px 16px rgba(0,0,0,0.25)",
                     }}
                   >
                     <p className="font-bold text-green-900 text-sm text-center px-2 truncate w-full">
@@ -583,6 +589,7 @@ function Dashboard() {
             </form>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
